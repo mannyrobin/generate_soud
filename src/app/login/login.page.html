@@ -1,0 +1,48 @@
+<ion-content>
+  <div class="wrap_login">
+    <div class="small_wrap_part">
+      <h2>{{ "haveAcc" | translate }}</h2>
+      <p>{{ "signUp" | translate }}</p>
+
+      <a [routerLink]="'/' + APP_ROUTE_URLS.REGISTER">
+        {{ "signUpBtn" | translate }}
+      </a>
+    </div>
+    <div class="long_wrap_part">
+      <div class="header_long">
+        <a href="#">
+          <img src="assets/img/Logo.png" alt="logo">
+        </a>
+
+        <select (change)="changeLang($event.target.value)">
+          <option
+            *ngFor="let language of APP_LANGUAGES"
+            [value]="language.code"
+            [selected]="language.code === selectedLang">
+            {{ language.label }}
+          </option>
+        </select>
+      </div>
+
+      <div class="center_long">
+        <h2>{{ "enter" | translate }}</h2>
+        <div class="form_center">
+          <form action="">
+            <div class="wrap_form">
+              <p>{{ "enterEmail" | translate }}</p>
+              <ion-input type="email" [(ngModel)]="email" name="email"></ion-input>
+            </div>
+            <div class="wrap_form">
+              <p>{{ "enterPass" | translate }}</p>
+              <ion-input type="password" [(ngModel)]="password" name="password"></ion-input>
+            </div>
+
+            <div class="wrap_form wrap_form_subm">
+              <input type="submit" value="{{'login' | translate}}" (click)="tryLogin()">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,121 @@
+<ion-content>
+  <div class="overlay"></div>
+  <div class="wrap_of_main_structure wrap_height">
+    <div class="right_content">
+      <!--<div class="wrap_of_menu_small">-->
+      <!--<a href="#"><img src="assets/img/hamb.png" alt="hamb"></a>-->
+      <!--</div>-->
+      <div class="info_block">
+        <div class="left_info" [formGroup]="infoFormGroup">
+          <h2>Information</h2>
+          <div class="left_bottom">
+            <div class="left_bott_el">
+              <p>{{ 'name' | translate }}</p>
+              <input type="text" formControlName="name">
+            </div>
+
+            <div class="left_bott_el">
+              <p>{{ 'email' | translate }}</p>
+              <input type="text" formControlName="email">
+            </div>
+
+            <div class="left_bott_el">
+              <p>{{ 'tel' | translate }}</p>
+              <input type="text" formControlName="phone">
+            </div>
+
+            <div class="left_bott_el">
+              <p>{{ 'address' | translate }}</p>
+              <input type="text" formControlName="address">
+            </div>
+          </div>
+
+          <div class="left_card">
+            <p>{{ 'bankCards' | translate }}</p>
+            <a class="txt_col_ plus_button" (click)="unavailable()">
+              <img src="assets/img/plus.png" alt="plus">
+              {{ 'addBankCards' | translate }}
+            </a>
+          </div>
+        </div>
+
+        <div class="right_info">
+          <div class="inner_right_selection">
+            <h2>{{ 'selectColor' | translate }} {{ color }}</h2>
+            <div class="choose_colors_block">
+              <div class="choose_elem blue_col" data-id="#0E1FC0" data-back="backside.png" data-plus="plus.png"
+                   (click)="setColor('')">
+                <img src="assets/img/acceptmark.png" alt="acceptmark" *ngIf="color == ''">
+              </div>
+              <div class="choose_elem pink_col" data-id="#E91E63" data-back="pinkb.png" data-plus="pluspink.png"
+                   (click)="setColor('pink')">
+                <img src="assets/img/acceptmark.png" alt="acceptmark" *ngIf="color == 'pink'">
+              </div>
+              <div class="choose_elem  red_col" data-id="#D50000" data-back="redb.png" data-plus="plusred.png"
+                   (click)="setColor('red')">
+                <img src="assets/img/acceptmark.png" alt="acceptmark" *ngIf="color == 'red'">
+              </div>
+              <div class="choose_elem  purple_col" data-id="#6A1B9A" data-back="purpleb.png" data-plus="pluspurple.png"
+                   (click)="setColor('purple')">
+                <img src="assets/img/acceptmark.png" alt="acceptmark" *ngIf="color == 'purple'">
+              </div>
+              <div class="choose_elem green_col" data-id="#00C853" data-back="greenb.png" data-plus="plusgreen.png"
+                   (click)="setColor('green')">
+                <img src="assets/img/acceptmark.png" alt="acceptmark" *ngIf="color == 'green'">
+              </div>
+              <div class="choose_elem orange_col" data-id="#FF5722" data-back="orangeb.png" data-plus="plusorange.png"
+                   (click)="setColor('orange')">
+                <img src="assets/img/acceptmark.png" alt="acceptmark" *ngIf="color == 'orange'">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="newCardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="newcardblock">
+          <div class="bank_header">
+            <p>{{ 'addNewBankCard' | translate }}</p> <img src="img/visa.png" alt="visa">
+          </div>
+          <div class="bank_content">
+            <div class="number_card">
+              <p>{{ 'cardNumber' | translate }}</p>
+              <div class="wrap_number_card">
+                <input type="text" placeholder="****" maxlength="4">
+                <input type="text" placeholder="****" maxlength="4">
+                <input type="text" placeholder="****" maxlength="4">
+                <input type="text" placeholder="****" maxlength="4">
+              </div>
+            </div>
+            <div class="bottom_cvv">
+              <div class="surname_inp">
+                <p>{{ 'nameSurname' | translate }}</p>
+                <input type="text">
+              </div>
+
+              <div class="date_year">
+                <p>{{ 'dateY' | translate }}</p>
+                <input type="text" maxlength="5">
+              </div>
+
+              <div class="cvc_inp">
+                <p>{{ 'cvc' | translate }}</p>
+                <input type="text" maxlength="3	">
+              </div>
+            </div>
+          </div>
+          <div class="bank_bottom_content">
+            <a href="#">{{ 'cancel' | translate }}</a>
+            <a href="#">{{ 'addNewBankCard' | translate }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

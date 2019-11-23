@@ -1,0 +1,67 @@
+<div class="wrap_of_main_structure">
+  <div class="right_content">
+    <ng-container *ngIf="!isUnsubscribed; else unsubscribedTpl">
+      <form
+        class="unsubscribe_container g-flex-column"
+        [formGroup]="formGroup">
+        <h2 class="title">
+          Отказаться от подписки
+        </h2>
+
+        <div class="content">
+          В случае отказа от подписки Компания CIMATICS RESONANSE деньги не возвращает!
+        </div>
+
+        <div class="confirm g-flex g-flex--align-center">
+          <div class="g-flex__item-fixed">
+            <input
+              class="checkbox"
+              type="checkbox"
+              id="confirm-checkbox"
+              [formControlName]="CONTROLS_NAME.CONFIRM">
+            <label
+              class="label"
+              [class.checked]="formGroup.get(CONTROLS_NAME.CONFIRM).value"
+              for="confirm-checkbox">
+            </label>
+          </div>
+
+          <div class="checkbox__label g-flex__item">
+            Я согласен с условиями
+          </div>
+        </div>
+
+        <div class="buttons g-flex g-flex--align-center">
+          <button
+            class="btn cancel"
+            (click)="cancel()">
+            {{ 'cancel' | translate }}
+          </button>
+
+          <button
+            class="btn done"
+            [disabled]="!formGroup.get(CONTROLS_NAME.CONFIRM).value"
+            (click)="success()">
+            {{ 'done' | translate }}
+          </button>
+        </div>
+      </form>
+    </ng-container>
+
+    <ng-template #unsubscribedTpl>
+      <div class="success-content g-flex-column g-flex--align-center">
+        <div class="unsubscribe-success">
+          Вы успешно отписались!
+          <br/>
+          Спасибо за то что пользовались нашими услугами
+        </div>
+
+        <button
+          class="btn ok"
+          (click)="ok()">
+          OK
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>

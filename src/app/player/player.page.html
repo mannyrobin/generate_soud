@@ -1,0 +1,413 @@
+<ion-content>
+  <form
+    class="player-form g-flex-column"
+    [formGroup]="playerFormGroup">
+    <div class="wrap_of_top_player g-flex-column__item-fixed">
+      <div class="head_of_player">
+        <div class="head_logo">
+          <a>
+            <img src="assets/img/bluelogo.png" alt="bluelogo">
+          </a>
+        </div>
+
+        <div class="search_with_settings">
+          <div class="search_player">
+            <div class="selected-sounds g-flex g-flex--align-center">
+              <span class="selected-sounds__label">{{ currentSound }}</span>
+            </div>
+          </div>
+
+          <div class="filter_player">
+            <input
+              type="text"
+              class="custom-duration"
+              maxlength="3"
+              [class.invalid]="playerFormGroup.get(CONTROLS_NAME.CUSTOM_TIME).invalid"
+              [formControlName]="CONTROLS_NAME.CUSTOM_TIME">
+
+            <a [class]="color + '_back'">
+              <ion-icon name="settings"></ion-icon>
+            </a>
+          </div>
+        </div>
+
+        <div class="player_buttons">
+          <div class="controls_player">
+            <i class="fa fa-arrows" aria-hidden="true"></i>
+
+            <button
+              class="btn-player"
+              [disabled]="isSwitchButtonsDisabled"
+              (click)="autoPlay(0)">
+              <img
+                src="assets/img/prevbutton.png"
+                alt="prevbutton">
+            </button>
+
+            <button
+              *ngIf="!playerSoundService.isSomePlaying"
+              [disabled]="!selectedSounds.length"
+              class="btn-player"
+              (click)="playSelectedSounds()">
+              <img
+                src="assets/img/playbutton.png"
+                alt="playbutton">
+            </button>
+
+            <button
+              *ngIf="playerSoundService.isSomePlaying"
+              [disabled]="!selectedSounds.length"
+              class="btn-player"
+              (click)="pauseSelectedSounds()">
+              <img
+                src="assets/img/pause-button.png"
+                alt="playbutton">
+            </button>
+
+            <button
+              class="btn-player"
+              [disabled]="isSwitchButtonsDisabled"
+              (click)="autoPlay(1)">
+              <img
+                src="assets/img/nextbutton.png"
+                alt="nextbutton">
+            </button>
+          </div>
+
+          <div class="duration_block {{ color }}">
+            <ion-range
+              [formControlName]="CONTROLS_NAME.RANGE"
+              (touchstart)="onTouchStartRange()"
+              (touchend)="onTouchEndRange()"
+              (ionChange)="onChangeRange($event)"
+              min="0"
+              max="100"
+              step="1">
+            </ion-range>
+          </div>
+
+          <div class="timing_block">
+            <p class="timer">
+              {{ countDown | async | formatTime }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap_of_bottom_player player__fourth player-container g-flex-column__item">
+      <ng-container *ngIf="isPlaylistOpened; else categoriesTpl">
+        <playlist
+          class="playlist"
+          [draggedFilteredSounds]="draggedFilteredSounds"
+          [user]="user"
+          [customDuration]="customDuration"
+          [copiedSounds]="copiedSounds"
+          (copyPlaylistSound)="onCopyPlaylistSound($event)"
+          (resetSound)="resetSounds()"
+          (selectSound)="onPlaylistSoundChange($event)">
+        </playlist>
+      </ng-container>
+
+      <ng-template #categoriesTpl>
+        <!-- Categories -->
+        <div class="category_player {{ color }}_categor g-flex-column">
+          <div class="edit_of_ g-flex-column__item-fixed">
+            <div class="lf_edit">
+              <textarea
+                #categoryTextarea
+                [formControlName]="CONTROLS_NAME.CATEGORY"
+                cols="30"
+                rows="10">
+              </textarea>
+            </div>
+            <div class="rg_edit g-flex-column">
+              <button
+                class="create_btn g-flex g-flex--align-center g-flex--justify-center"
+                [disabled]="!categoryTextarea.value.trim()"
+                (click)="onAddCategory()">
+                {{ 'create' | translate }}
+              </button>
+
+              <button
+                class="edit_me_ g-flex g-flex--align-center g-flex--justify-center"
+                [disabled]="!selectedCategoryId || isOfficialCategorySelected"
+                (click)="onEditCategory()">
+                {{ 'edit' | translate }}
+              </button>
+            </div>
+          </div>
+
+          <div class="edit_of_content g-flex-column__item g-flex-column">
+            <div class="head_of_edit_ g-flex-column__item-fixed">
+              <h2>{{ 'category' | translate }}</h2>
+
+              <button
+                class="delete_elems"
+                [disabled]="!selectedCategoryId || isOfficialCategorySelected"
+                (click)="onDeleteCategory()">
+                {{ 'delete' | translate }}
+              </button>
+            </div>
+
+            <div class="g-flex-column__item g-flex-column g-scroll-y">
+              <div
+                class="cont_of_edit_ count_elems categories"
+                [ngClass]="color + '_edit'">
+                <div
+                  *ngFor="let categoryId of officialCategoriesId"
+                  [id]="categoryId"
+                  [class]="'dragged-element ' + color"
+                  (click)="filterCourses(categoryId)">
+                  <div
+                    *ngFor="let cat of categories | category: categoryId"
+                    class="elem_of_cont_edit {{ color }}"
+                    [class.active_elem_]="cat.id == selectedCategoryId">
+                    <p>
+                      {{ cat.name }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="cont_of_edit_ count_elems user-categories"
+                cdkDropList
+                (cdkDropListDropped)="dropCategory($event)"
+                [ngClass]="color + '_edit'">
+                <div
+                  *ngFor="let categoryId of userOwnCategoriesId"
+                  cdkDrag
+                  [id]="categoryId"
+                  [class]="'dragged-element ' + color"
+                  (click)="filterCourses(categoryId)">
+                  <div
+                    *ngFor="let cat of categories | category: categoryId"
+                    class="elem_of_cont_edit {{ color }} by-user"
+                    [class.active_elem_]="cat.id == selectedCategoryId">
+                    <p>
+                      {{ cat.name }}
+                    </p>
+
+                    <img class="moved-img" src="../../assets/category.svg">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Courses -->
+        <div class="category_player {{ color }}_categor g-flex-column">
+          <div class="edit_of_ g-flex-column__item-fixed">
+            <div class="lf_edit">
+              <textarea
+                #courseTextarea
+                [formControlName]="CONTROLS_NAME.COURSE"
+                cols="30"
+                rows="10">
+              </textarea>
+            </div>
+            <div class="rg_edit g-flex-column">
+              <button
+                class="create_btn g-flex g-flex--align-center g-flex--justify-center"
+                [disabled]="isDisableCourseCreate"
+                (click)="onAddCourse()">
+                {{ 'create' | translate }}
+              </button>
+
+              <button
+                class="edit_me_ g-flex g-flex--align-center g-flex--justify-center"
+                [disabled]="!selectedCourse || isOfficialCourseSelected"
+                (click)="onEditCourse()">
+                {{ 'edit' | translate }}
+              </button>
+            </div>
+          </div>
+
+          <div class="edit_of_content count_elems g-flex-column__item g-flex-column">
+            <div class="head_of_edit_ g-flex-column__item-fixed">
+              <h2>{{ 'course' | translate }}</h2>
+
+              <button
+                class="delete_elems"
+                [disabled]="!selectedCourse || isOfficialCourseSelected"
+                (click)="onDeleteCourse()">
+                {{ 'delete' | translate }}
+              </button>
+            </div>
+
+            <div class="g-flex-column__item g-flex-column g-scroll-y">
+              <div
+                *ngIf="userOwnCategoryCourses.length"
+                class="cont_of_edit_ {{ color }}_edit courses"
+                cdkDropList
+                (cdkDropListDropped)="dropCourse($event)">
+                <ng-container *ngFor="let course of userOwnCategoryCourses">
+                  <div
+                    cdkDrag
+                    class="dragged-element elem_of_cont_edit course by-user"
+                    (click)="setCourse(course)"
+                    [class.active_elem_]="course.id == selectedCourse && selectedCourse">
+                    <p>{{ course.name }}</p>
+
+                    <img class="moved-img" src="../../assets/category.svg">
+                  </div>
+                </ng-container>
+              </div>
+
+              <div
+                *ngIf="officialCategoryCourses.length"
+                class="cont_of_edit_ {{ color }}_edit courses">
+                <ng-container *ngFor="let course of officialCategoryCourses">
+                  <div
+                    class="elem_of_cont_edit course"
+                    (click)="setCourse(course)"
+                    [class.active_elem_]="course.id == selectedCourse && selectedCourse">
+                    <p>{{ course.name }}</p>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <!-- Program -->
+      <ng-container *ngIf="!isPlaylistOpened">
+        <div class="category_player longer_program g-flex-column">
+          <div class="create_of_ g-flex-column__item-fixed">
+            <button
+              class="hovered_btns {{ color }}_button"
+              [class.has-copied]="copiedSounds.length || copiedMixes.length"
+              [disabled]="!selectedCourse"
+              (click)="copySounds()">
+              {{ 'pCopy' | translate }}
+            </button>
+
+            <button
+              class="hovered_btns"
+              [disabled]="!selectedCourse || isOfficialCourseSelected || (!copiedSounds.length && !copiedMixes.length)"
+              (click)="pasteSounds()">
+              {{ 'pPaste' | translate }}
+            </button>
+          </div>
+
+          <div class="edit_of_content g-flex-column__item g-flex-column">
+            <div class="head_of_edit_ head_of_programm_sort g-flex-column__item-fixed">
+              <h2>{{ 'program' | translate }}</h2>
+              <a>{{ 'edit' | translate }}</a>
+            </div>
+
+            <div
+              cdkDropList
+              #draggedSoundListElm="cdkDropList"
+              [cdkDropListData]="soundList"
+              [cdkDropListConnectedTo]="[draggedFilteredSounds]"
+              (cdkDropListDropped)="dropSound($event)"
+              class="program_edit_ count_elems cont_of_edit_ g-flex-column__item">
+              <div
+                *ngFor="let sound of soundList; let i = index"
+                class="elem_program"
+                cdkDragBoundary=".program_edit_"
+                cdkDrag>
+                <div class="lf_program programm-row g-flex__item">
+                  <div class="preview_prog">
+                    <div
+                      class="checkbox-wrapper"
+                      (click)="changeSelectedSounds(sound, $event)">
+                    </div>
+
+                    <p class="checkbox_in_prog">
+                      <input
+                        type="checkbox"
+                        [id]="'courseSound-' + i"
+                        [checked]="selectedSounds.indexOf(sound) !== -1">
+                      <label [for]="'courseSound-' + i"></label>
+                    </p>
+                  </div>
+
+                  <div
+                    class="sound-label"
+                    (click)="changeSelectedSounds(sound, $event)">
+                    {{ i + 1 }}. {{ sound.name }}
+                  </div>
+                </div>
+
+                <div class="rf_program g-flex__item-fixed">
+                  <p>{{ sound.duration }}</p>
+
+                  <img
+                    *ngIf="!isOfficialCourseSelected"
+                    src="../../assets/img/bin.png"
+                    alt="bin"
+                    class="bin_button"
+                    (click)="removeSound(sound)">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Sounds list -->
+      <div class="category_player longer_program generation_block g-flex-column">
+        <div class="generation_buttons {{ color }}_button g-flex-column__item-fixed">
+          <!--<a (click)="openMenu()" class="active_generation">My Page</a>-->
+          <a [routerLink]="'/' + APP_ROUTE_URLS.INFO" class="active_generation">{{ "home" | translate }}</a>
+          <a class="hovered_btns" (click)="changeLanguage()">{{ "cLang" | translate }}</a>
+        </div>
+
+        <div class="generation_content count_elems g-flex-column__item g-flex-column">
+          <div class="scrolltobot g-flex-column__item-fixed">
+            <img src="assets/img/scrollBot.png" alt="scrollBot">
+          </div>
+
+          <div class="head_generation g-flex-column__item g-flex-column">
+            <h2 class="g-flex-column__item-fixed">
+              {{ "tList" | translate }}
+            </h2>
+
+            <div class="inner_head_generation {{ color }}_generation g-flex-column__item-fixed">
+              <ion-input type="text" (ionInput)="getItems($event)" placeholder="Поиск"></ion-input>
+            </div>
+
+            <div
+              cdkDropList
+              #draggedFilteredSoundsElm="cdkDropList"
+              [cdkDropListData]="filteredSounds"
+              class="generation_wrap cont_of_edit_ top-list g-flex-column g-scroll-y">
+              <div
+                *ngFor="let sound of filteredSounds; let i = index"
+                cdkDrag
+                class="generation_elem">
+                <p>{{ i + 1 }}. {{ sound.name }}</p>
+                <p>{{ sound.duration }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom_delete courses_bottom">
+      <h2>{{ 'delCourse' | translate }}</h2>
+      <div class="bottom_buttons">
+        <a class="delete_button_courses">{{ 'delete' | translate }}</a>
+        <a class="ok_button_courses">OK</a>
+      </div>
+    </div>
+
+    <div class="bottom_delete program_bottom">
+      <h2>{{ 'delProg' | translate }}</h2>
+      <div class="bottom_buttons">
+        <a class="delete_button_program">{{ 'delete' | translate }}</a>
+        <a class="ok_button_program">OK</a>
+      </div>
+    </div>
+
+    <div class="switcher_of_page {{color}}">
+      <a (click)="switchPlaylist()">{{ (isPlaylistOpened ? 'category' : 'playlist') | translate }} </a>
+    </div>
+  </form>
+</ion-content>

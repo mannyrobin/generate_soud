@@ -1,0 +1,87 @@
+<ion-app>
+  <ion-menu
+    menuId="first"
+    type="push"
+    disabled="true"
+    (ionDidOpen)="isMenuOpened = true"
+    (ionDidClose)="isMenuOpened = false">
+    <div
+      class="left_menu back_col_ {{ color }}">
+      <a [routerLink]="'/' + APP_ROUTE_URLS.PLAYER">
+        <img src="assets/img/logomenu.png" alt="logomenu">
+      </a>
+
+      <p>{{ "home" | translate }}</p>
+
+      <ul>
+        <li>
+          <a
+            [routerLink]="'/' + APP_ROUTE_URLS.INFO"
+            routerLinkActive="active_class">
+            <span>
+              <img src="assets/img/mic1.png" alt="mic">
+            </span>
+            {{ "information" | translate }}
+          </a>
+        </li>
+
+        <li>
+          <a
+            [routerLink]="'/' + APP_ROUTE_URLS.COUPONS"
+            routerLinkActive="active_class">
+              <span>
+                <img src="assets/img/mic2.png" alt="mic">
+              </span>
+            {{ "subscription" | translate }}
+          </a>
+        </li>
+
+        <li>
+          <a
+            [routerLink]="'/' + APP_ROUTE_URLS.HISTORY"
+            routerLinkActive="active_class">
+              <span>
+                <img src="assets/img/mic3.png" alt="mic">
+              </span>
+            {{ "buyHistory" | translate }}
+          </a>
+        </li>
+
+        <li>
+          <a
+            [routerLink]="'/' + APP_ROUTE_URLS.UNSUB"
+            routerLinkActive="active_class">
+              <span>
+                <img src="assets/img/mic4.png" alt="mic">
+              </span>
+            {{ "unSub" | translate }}
+          </a>
+        </li>
+
+        <li>
+          <a
+            [routerLink]="'/' + APP_ROUTE_URLS.PLAYER"
+            routerLinkActive="active_class"
+            (click)="closeMenu()">
+              <span>
+                <img src="assets/img/mic5.png" alt="mic">
+              </span>
+            {{ "player" | translate }}
+          </a>
+        </li>
+      </ul>
+
+      <div class="exit_button">
+        <a (click)="exit()">
+          <img src="assets/img/exit.png" alt="exit">
+          {{ "logout" | translate }}
+        </a>
+      </div>
+    </div>
+  </ion-menu>
+
+  <ion-router-outlet
+    main
+    [class.menu-opened]="isMenuOpened">
+  </ion-router-outlet>
+</ion-app>

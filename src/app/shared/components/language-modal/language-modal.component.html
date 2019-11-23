@@ -1,0 +1,14 @@
+<div class="header_long change-lang">
+  <div>
+    {{ "cLang" | translate }}
+  </div>
+
+  <select (change)="changeLang($event.target.value)">
+    <option
+      *ngFor="let language of APP_LANGUAGES"
+      [value]="language.code"
+      [selected]="language.code === selectedLang">
+      {{ language.label }}
+    </option>
+  </select>
+</div>

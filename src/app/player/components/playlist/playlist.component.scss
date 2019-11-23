@@ -1,0 +1,134 @@
+.playlist-container {
+  width: 75%;
+}
+
+.category_player {
+  width: 37%;
+  margin-left: 2%;
+}
+
+.hovered_btns,
+.edit_me_,
+.create_btn,
+.delete_elems {
+  background: none;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+  }
+
+  &:active {
+    background-color: #0E1FC0;
+    color: #fff;
+    transition: 0.2s ease all;
+  }
+}
+
+.hovered_btns_left,
+.hovered_btns_right {
+  width: 100%;
+}
+
+.hovered_btns_left {
+  margin-right: 5px;
+}
+
+.hovered_btns_right {
+  margin-left: 5px;
+}
+
+.hovered_btns {
+  width: 100%;
+  height: 27.5px;
+  white-space: nowrap;
+}
+
+.delete_elems {
+  font-size: 20px;
+}
+
+.edit_me_,
+.create_btn {
+  flex: auto;
+  padding: 3px;
+  border-radius: 5px;
+  border: 1px solid #D1D1D3;
+}
+
+.edit_me_ {
+  margin-top: 5px;
+}
+
+.playlist-items {
+  margin-top: 10px;
+}
+
+.checkbox-wrapper {
+  background: transparent;
+  width: 50px;
+  height: 30px;
+  position: absolute;
+  z-index: 10;
+}
+
+.dragged-element {
+  margin-bottom: 10px;
+
+  .moved-img {
+    display: none;
+  }
+
+  &.moved {
+    .moved-img {
+      display: block;
+    }
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.mix-btn {
+  margin-top: 5px;
+}
+
+.cont_of_edit_ {
+  overflow-y: visible;
+
+  &.sounds,
+  &.mix {
+    margin-top: 0;
+  }
+}
+
+.sound-label {
+  &__mix {
+    padding: 6px 0;
+  }
+}
+
+.rf_program {
+  display: flex;
+  justify-content: flex-end;
+
+  img {
+    display: flex !important;
+    height: 16px;
+    width: 16px;
+    margin-left: 10px;
+    padding: 0;
+  }
+}
+
+.elem_program .lf_program p {
+  margin-right: 0;
+}
+
+.head_of_edit_ {
+  margin-bottom: 0;
+}

@@ -1,0 +1,188 @@
+<div class="wrap_of_main_structure">
+  <div class="right_content">
+    <ng-container class="coupone_block">
+      <div class="header_coupone">
+        <h2>{{ "coupon" | translate }}</h2>
+
+        <div class="status_coupone">
+          <div class="active_status {{statusClass}}"></div>
+        </div>
+
+        <div class="after_status_">
+          <p>{{ page }} {{ 'step4' | translate }}</p>
+        </div>
+      </div>
+
+      <div [ngSwitch]="page">
+        <!-- page 1 -->
+        <div
+          *ngSwitchCase="1"
+          class="choose_coupone">
+          <p>{{ 'selectSubscribe' | translate }}</p>
+
+          <div class="outer_choose_coupone">
+            <div class="elem_choose_coupone" (click)="setCoupon(1)">
+              <div class="choose_coupone_head">
+                <a>
+                  <span>Beauty &amp; Health Pack</span>
+                </a>
+              </div>
+
+              <div class="choose_coupone_content">
+                <ul>
+                  <li><span><img src="assets/img/checkmar.png" alt="checkmar"></span>Возможо слушать звуки в фоновом и
+                    офлайн-режиме
+                  </li>
+                  <li><span><img src="assets/img/checkmar.png" alt="checkmar"></span>Без рекламы</li>
+                  <li><span><img src="assets/img/checkmar.png" alt="checkmar"></span>Возможо слушать звуки в фоновом и
+                    офлайн-режиме
+                  </li>
+                  <li><span><img src="assets/img/checkmar.png" alt="checkmar"></span>Без рекламы</li>
+                  <li><span><img src="assets/img/checkmar.png" alt="checkmar"></span>Возможо слушать звуки в фоновом и
+                    офлайн-режиме
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="elem_choose_coupone" (click)="setCoupon(2)">
+              <div class="choose_coupone_head">
+                <a>
+                  <span>Salon Pack</span>
+                </a>
+              </div>
+
+              <div class="choose_coupone_content">
+                <ul>
+                  <li><span><img src="assets/img/checkmar.png" alt="checkmar"></span>Возможо слушать звуки в фоновом и
+                    офлайн-режиме
+                  </li>
+                  <li><span><img src="assets/img/checkmar.png" alt="checkmar"></span>Без рекламы</li>
+                  <li><span><img src="assets/img/checkmar.png" alt="checkmar"></span>Возможо слушать звуки в фоновом и
+                    офлайн-режиме
+                  </li>
+                  <li><span><img src="assets/img/checkmar.png" alt="checkmar"></span>Без рекламы</li>
+                  <li><span><img src="assets/img/checkmar.png" alt="checkmar"></span>Возможо слушать звуки в фоновом и
+                    офлайн-режиме
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="elem_choose_coupone" (click)="setCoupon(3)">
+              <div class="choose_coupone_head">
+                <a>
+                  <span>Advanced Pack</span>
+                </a>
+              </div>
+
+              <div class="choose_coupone_content">
+                <ul>
+                  <li><span><img src="assets/img/checkmar.png" alt="checkmar"></span>Возможо слушать звуки в фоновом и
+                    офлайн-режиме
+                  </li>
+                  <li><span><img src="assets/img/checkmar.png" alt="checkmar"></span>Без рекламы</li>
+                  <li><span><img src="assets/img/checkmar.png" alt="checkmar"></span>Возможо слушать звуки в фоновом и
+                    офлайн-режиме
+                  </li>
+                  <li><span><img src="assets/img/checkmar.png" alt="checkmar"></span>Без рекламы</li>
+                  <li><span><img src="assets/img/checkmar.png" alt="checkmar"></span>Возможо слушать звуки в фоновом и
+                    офлайн-режиме
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- page 2 -->
+        <div
+          *ngSwitchCase="2"
+          class="choose_coupone">
+          <p>{{ 'subscribeTime' | translate }}</p>
+
+          <div class="outer_choose_time">
+            <div class="inner_choose_time">
+              <div class="elem_choose_time" (click)="setTerm(1)">
+                <p>1 {{ 'day' | translate }}</p>
+              </div>
+
+              <div class="elem_choose_time" (click)="setTerm(2)">
+                <p>1 {{ 'week' | translate }}</p>
+              </div>
+
+              <div class="elem_choose_time" (click)="setTerm(3)">
+                <p>1 {{ 'month' | translate }}</p>
+              </div>
+
+              <div class="elem_choose_time" (click)="setTerm(4)">
+                <p>1 {{ 'year' | translate }}</p>
+              </div>
+            </div>
+
+            <div class="after_buttons_time">
+              <a (click)="goToPage(1)">
+                <img src="assets/img/backarr.png" alt="backarr">
+                {{ 'back' | translate }}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- page 3 -->
+        <div
+          *ngSwitchCase="3"
+          class="choose_coupone">
+          <p>{{ 'payMethod' | translate }}</p>
+
+          <div class="outer_choose_time outer_choose_payment">
+            <div class="card_block">
+              <a (click)="unavailable()" class="elem_of_card_block">
+                <p>{{ 'bankCard' | translate }}</p>
+              </a>
+              <a (click)="unavailable()" class="elem_of_card_block">
+                <p>{{ 'bankTrans' | translate }}</p>
+              </a>
+              <a (click)="goToPage(6)" class="elem_of_card_block">
+                <p>{{ 'haveCode' | translate }}</p>
+              </a>
+            </div>
+
+            <div class="after_buttons_time">
+              <a (click)="goToPage(2)">
+                <img src="assets/img/backarr.png" alt="backarr">
+                {{ 'back' | translate }}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- page 6 -->
+        <div
+          *ngSwitchCase="6"
+          class="choose_coupone">
+          <p>{{ 'couponCode' | translate }}</p>
+          <br>
+          <div class="outer_choose_time outer_choose_payment remove_height_payment">
+            <div class="coupone_sale">
+              <p>{{ 'couponCode' | translate }}</p>
+
+              <input type="text" [(ngModel)]="code">
+            </div>
+
+            <div class="after_buttons_time">
+              <a (click)="goToPage(3)">
+                <img src="assets/img/backarr.png" alt="backarr">
+                {{ 'back' | translate }}
+              </a>
+
+              <a (click)="checkCode()">
+                {{ 'next' | translate }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

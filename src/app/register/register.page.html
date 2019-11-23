@@ -1,0 +1,149 @@
+<ion-content fullscreen>
+  <div class="wrap_login">
+    <div class="small_wrap_part">
+      <h2>{{ 'wBack' | translate }}</h2>
+      <p>{{ 'enterToAcc' | translate }}</p>
+      <a
+        href="#"
+        [routerLink]="'/' + APP_ROUTE_URLS.LOGIN">
+        {{ "login" | translate }}
+      </a>
+    </div>
+    <div class="long_wrap_part">
+      <div class="header_long">
+        <a href="#">
+          <img src="assets/img/Logo.png" alt="logo">
+        </a>
+
+        <select (change)="changeLang($event.target.value)">
+          <option
+            *ngFor="let language of APP_LANGUAGES"
+            [value]="language.code"
+            [selected]="language.code === selectedLang">
+            {{ language.label }}
+          </option>
+        </select>
+      </div>
+
+      <div class="center_long">
+        <h2>{{ "signUpBtn" | translate }}</h2>
+
+        <div class="form_center">
+          <form [formGroup]="formGroup">
+            <div
+              class="wrap_form"
+              [class.has-error]="controlHasError(CONTROLS_NAME.NAME)">
+              <p>{{ "name" | translate }}</p>
+
+              <input
+                [formControlName]="CONTROLS_NAME.NAME"
+                class="form-input">
+            </div>
+
+            <div
+              class="wrap_form"
+              [class.has-error]="controlHasError(CONTROLS_NAME.LAST_NAME)">
+              <p>{{ "surName" | translate }}</p>
+
+              <input
+                [formControlName]="CONTROLS_NAME.LAST_NAME"
+                class="form-input">
+            </div>
+
+            <div
+              class="wrap_form"
+              [class.has-error]="controlHasError(CONTROLS_NAME.ADDRESS)">
+              <p>{{ "address" | translate }}</p>
+
+              <input
+                [formControlName]="CONTROLS_NAME.ADDRESS"
+                class="form-input">
+            </div>
+
+            <div
+              class="wrap_form"
+              [class.has-error]="controlHasError(CONTROLS_NAME.PHONE)">
+              <p>{{ "tel" | translate }}</p>
+
+              <input
+                [formControlName]="CONTROLS_NAME.PHONE"
+                class="form-input"
+                type="number"
+                autocomplete="off"
+                style="font-family: Arial">
+            </div>
+
+            <div
+              class="wrap_form"
+              [class.has-error]="controlHasError(CONTROLS_NAME.CODE)">
+              <p>
+                <ion-icon
+                  name="information-circle-outline"
+                  popper="Enter the code of the employee from whom you came from, if there is no code put it everywhere 0"
+                  popperTrigger="click"></ion-icon>
+                {{ "personalCode" | translate }}
+              </p>
+
+              <input
+                class="form-input"
+                type="text"
+                [formControlName]="CONTROLS_NAME.CODE"
+                mask="[0][000][0000]"
+                maxlength="14"
+                style="font-family: Arial">
+            </div>
+
+            <div
+              class="wrap_form"
+              [class.has-error]="controlHasError(CONTROLS_NAME.EMAIL)">
+              <p class="form-label">
+                {{ "email" | translate }}*
+              </p>
+
+              <input
+                class="form-input"
+                [formControlName]="CONTROLS_NAME.EMAIL"
+                autocomplete="off">
+            </div>
+
+            <div
+              class="wrap_form"
+              [class.has-error]="controlHasError(CONTROLS_NAME.CONFIRM_PASSWORD)">
+              <p class="form-label">
+                {{ "pass" | translate }}*
+              </p>
+
+              <input
+                class="form-input"
+                [formControlName]="CONTROLS_NAME.PASSWORD"
+                autocomplete="off">
+            </div>
+
+            <div
+              class="wrap_form"
+              [class.has-error]="controlHasError(CONTROLS_NAME.CONFIRM_PASSWORD)">
+              <p
+                class="form-label">
+                {{ "rPass" | translate }}*
+              </p>
+
+              <input
+                class="form-input"
+                [formControlName]="CONTROLS_NAME.CONFIRM_PASSWORD"
+                autocomplete="off">
+            </div>
+          </form>
+
+          <div class="wrap_form wrap_form_subm">
+            <button
+              class="btn-register"
+              [disabled]="formGroup.invalid"
+              (click)="tryRegister()">
+              {{ 'signUpR' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

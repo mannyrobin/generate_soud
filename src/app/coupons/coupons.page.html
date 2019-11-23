@@ -1,0 +1,43 @@
+<ion-content>
+  <div class="content g-flex-column">
+    <div class="g-flex-column__item g-flex">
+      <ng-container *ngIf="activeCoupon; else noCouponTpl">
+        <div class="g-flex-column">
+          <div class="title">{{ activeCoupon.packname }}</div>
+
+          <div class="status g-flex g-flex--align-center">
+            <div class="status__title">Статус:</div>
+
+            <div>{{ activeCoupon.status }}</div>
+          </div>
+
+          <div class="status g-flex g-flex--align-center">
+            <div class="status__title">Тип купона:</div>
+
+            <div>{{ activeCoupon.expires }}</div>
+          </div>
+
+          <div class="available g-flex g-flex--align-center">
+            <div class="available__title">Срок действия купона:</div>
+
+            <div>{{ activeCoupon.date_expires | date:'dd.MM.yyyy HH:mm' }}</div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #noCouponTpl>
+        <div class="g-flex-column g-flex--justify-center" style="width: 100%">
+          <div class="no-coupons">У вас нет активных купонов</div>
+        </div>
+      </ng-template>
+    </div>
+
+
+    <button
+      class="btn-select-subscription g-flex-column__item-fixed"
+      [disabled]="activeCoupon && activeCoupon.status === COUPON_STATUSES.ACTIVE"
+      (click)="selectSubscription()">
+      {{ 'buyCoupon' | translate }}
+    </button>
+  </div>
+</ion-content>

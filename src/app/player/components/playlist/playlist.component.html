@@ -1,0 +1,221 @@
+<div class="playlist-container g-flex-column">
+  <div
+    [formGroup]="playlistFormGroup"
+    class="edit_of_ g-flex-column__item-fixed g-flex g-flex--align-center">
+    <div class="lf_edit g-flex__item">
+      <textarea
+        #playlistTextarea
+        [formControlName]="CONTROLS_NAME.PLAYLIST"
+        cols="30"
+        rows="10">
+      </textarea>
+    </div>
+
+    <div class="rg_edit g-flex__item-fixed g-flex-column">
+      <button
+        class="create_btn g-flex g-flex--align-center g-flex--justify-center"
+        (click)="onAddPlaylist()">
+        {{ 'create' | translate }}
+      </button>
+
+      <button
+        class="edit_me_ g-flex g-flex--align-center g-flex--justify-center"
+        [disabled]="!selectedItemId"
+        (click)="onEditPlaylist(selectedItemId)">
+        {{ 'edit' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div class="edit_of_content g-flex-column__item g-flex-column">
+    <div class="head_of_edit_ g-flex-column__item-fixed">
+      <h2>{{ 'playlist' | translate }}</h2>
+
+      <button
+        class="delete_elems"
+        [disabled]="!selectedItemId"
+        (click)="onDeletePlaylist()">
+        {{ 'delete' | translate }}
+      </button>
+    </div>
+
+    <div
+      class="count_elems playlist-items g-flex-column__item g-flex-column g-scroll-y"
+      cdkDropList
+      (cdkDropListDropped)="dropItem($event)"
+      [ngClass]="color + '_edit'">
+      <ng-container *ngFor="let item of playlists">
+        <div
+          cdkDrag
+          cdkDragBoundary=".playlist-items"
+          class="dragged-element elem_of_cont_edit course by-user"
+          (click)="selectItem(item)"
+          [class.active_elem_]="item.id === selectedItemId && selectedItemId">
+          <p>{{ item.name }}</p>
+
+          <img class="moved-img" src="../../assets/category.svg">
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<div class="category_player g-flex-column">
+  <div class="create_of_ g-flex-column__item-fixed g-flex g-flex--align-center">
+    <div class="hovered_btns_left">
+      <button
+        class="hovered_btns {{ color }}_button"
+        [class.has-copied]="copiedSounds.length || copiedMixes.length"
+        [disabled]="!selectedItemId"
+        (click)="copySounds()">
+        {{ 'pCopy' | translate }}
+      </button>
+
+      <ng-container *ngIf="selectedSounds.length && selectedMixes.length === 1; else saveMixTpl">
+        <button
+          class="hovered_btns mix-btn"
+          [disabled]="!selectedSounds.length || selectedMixes.length > 1"
+          (click)="saveMix()">
+          {{ 'addSoundsToMix' | translate }}
+        </button>
+      </ng-container>
+
+      <ng-template #saveMixTpl>
+        <button
+          class="hovered_btns mix-btn"
+          [disabled]="selectedSounds.length < 2 || selectedMixes.length > 1"
+          (click)="saveMix()">
+          {{ 'saveMix' | translate }}
+        </button>
+      </ng-template>
+    </div>
+
+    <div class="hovered_btns_right">
+      <button
+        class="hovered_btns"
+        [disabled]="!selectedItemId || (!copiedSounds.length && !copiedMixes.length)"
+        (click)="pasteSounds()">
+        {{ 'pPaste' | translate }}
+      </button>
+
+      <button
+        class="hovered_btns mix-btn"
+        [disabled]="!selectedMixes.length"
+        (click)="resetMix()">
+        {{ 'reset' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div class="edit_of_content g-flex-column__item g-flex-column">
+    <div class="head_of_edit_ head_of_programm_sort g-flex-column__item-fixed">
+      <h2>{{ 'program' | translate }}</h2>
+
+      <a>{{ 'edit' | translate }}</a>
+    </div>
+
+    <div class="g-flex-column__item g-scroll-y g-flex-column">
+      <div
+        *ngIf="selectedItemMixes?.length"
+        cdkDropList
+        #playlistDraggedMixesListElm="cdkDropList"
+        [cdkDropListData]="selectedItemMixes"
+        [cdkDropListConnectedTo]="[draggedFilteredSounds]"
+        (cdkDropListDropped)="dropMix($event)"
+        class="program_edit_ count_elems cont_of_edit_ mix">
+        <div
+          *ngFor="let mix of selectedItemMixes"
+          class="elem_program"
+          cdkDragBoundary=".program_edit_"
+          cdkDrag>
+          <div class="lf_program programm-row g-flex__item">
+            <div class="preview_prog g-flex__item-fixed">
+              <div
+                class="checkbox-wrapper"
+                (click)="changeSelectedMixes(mix, $event)">
+              </div>
+
+              <p class="checkbox_in_prog">
+                <input
+                  type="checkbox"
+                  id="playlistMix"
+                  [checked]="selectedMixes.indexOf(mix) !== -1">
+                <label for="playlistMix"></label>
+              </p>
+            </div>
+
+            <div class="g-flex-column g-flex__item">
+              <div
+                *ngFor="let sound of mix.sounds; let i = index"
+                class="g-flex g-flex--align-center">
+                <div
+                  class="sound-label__mix g-flex__item"
+                  (click)="changeSelectedMixes(mix, $event)">
+                  {{ i + 1 }}. {{ sound.name }}
+                </div>
+              </div>
+            </div>
+
+            <div class="rf_program g-flex__item-fixed g-flex g-flex--align-center">
+              <p>{{ mix.duration }}</p>
+
+              <img
+                src="../../assets/img/bin.png"
+                alt="bin"
+                class="bin_button"
+                (click)="removeMix(mix)">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        cdkDropList
+        #playlistDraggedSoundListElm="cdkDropList"
+        [cdkDropListData]="selectedItemSounds"
+        [cdkDropListConnectedTo]="[draggedFilteredSounds]"
+        (cdkDropListDropped)="dropSound($event)"
+        class="program_edit_ count_elems cont_of_edit_ sounds g-flex-column__item">
+        <div
+          *ngFor="let sound of selectedItemSounds; let i = index"
+          class="elem_program"
+          cdkDragBoundary=".program_edit_"
+          cdkDrag>
+          <div class="lf_program programm-row g-flex__item">
+            <div class="preview_prog">
+              <div
+                class="checkbox-wrapper"
+                (click)="changeSelectedSounds(sound, $event)">
+              </div>
+
+              <p class="checkbox_in_prog">
+                <input
+                  type="checkbox"
+                  [id]="'playlistSound-' + i"
+                  [checked]="selectedSounds.indexOf(sound) !== -1">
+                <label [for]="'playlistSound-' + i"></label>
+              </p>
+            </div>
+
+            <div
+              class="sound-label"
+              (click)="changeSelectedSounds(sound, $event)">
+              {{ i + countOfMixesSounds + 1 }}. {{ sound.name }}
+            </div>
+          </div>
+
+          <div class="rf_program g-flex__item-fixed g-flex g-flex--align-center">
+            <p>{{ sound.duration }}</p>
+
+            <img
+              src="../../assets/img/bin.png"
+              alt="bin"
+              class="bin_button"
+              (click)="removeSound(sound)">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

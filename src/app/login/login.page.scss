@@ -1,0 +1,46 @@
+@media screen and (max-width: 1380px) and (orientation: landscape){
+  //.long_wrap_part .center_long {
+  //  width: 450px;
+  //  padding: 0 !important;
+  //  margin: 0 !important;
+  //  width: 100%;
+  //}
+  input{
+    height: 60px !important;
+    max-height: 60px !important;
+    min-height: 60px !important;
+  }
+  .long_wrap_part .wrap_form > p {
+    font-size: 18px;
+    margin-bottom: 0;
+    font-weight: 400;
+  }
+  .long_wrap_part .center_long .wrap_form input[type="submit"], .small_wrap_part > a {
+    font-size: 21px;
+    height: 60px;
+    min-height: 60px;
+  }
+  .long_wrap_part .center_long .wrap_form input[type="text"],
+  .long_wrap_part .center_long .wrap_form input[type="password"],
+  .long_wrap_part .center_long .wrap_form input[type="email"],
+  .long_wrap_part .center_long .wrap_form input[type="number"]
+  {
+    height: 60px !important;
+    min-height: 60px !important;
+    background-color: #ffffff !important;
+  }
+  .long_wrap_part .center_long > h2 {
+    font-size: 36px;
+    text-align: center;
+  }
+  .long_wrap_part .center_long .wrap_form input[type="submit"]{
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+.wrap_form_subm input {
+  background: #0E1FC0;
+  color: #ffffff;
+}
