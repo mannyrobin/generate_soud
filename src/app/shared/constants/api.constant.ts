@@ -4,3 +4,4 @@ export const API_LOGIN    = 'login';
 export const API_COURSE   = 'course';
 export const API_CATEGORY = 'cat';
 export const API_SOUND    = 'sound';
+export const API_COUPON   = 'coupon';

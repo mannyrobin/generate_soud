@@ -168,6 +168,12 @@
               <p>{{ 'couponCode' | translate }}</p>
 
               <input type="text" [(ngModel)]="code">
+
+              <br/><br/>
+
+              <p>{{ 'couponNo' | translate }}</p>
+
+              <input type="text" value="{{ couponInfo === null ? '' : couponInfo.number }}" readonly>
             </div>
 
             <div class="after_buttons_time">
