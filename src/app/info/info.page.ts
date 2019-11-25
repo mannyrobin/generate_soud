@@ -109,6 +109,7 @@ export class InfoPage implements OnInit, OnDestroy {
     }
 
     if (userData.rows.length > 0) {
+      console.log(userData);
       this.infoFormGroup.get('name').setValue(
         `${userData.rows.item(0).name} ${userData.rows.item(0).last_name}`,
         { emitEvent: false },

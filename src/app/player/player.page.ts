@@ -22,7 +22,7 @@ import { APP_ROUTE_URLS } from '../shared/constants/routes.constant';
 import { ITranslations } from '../shared/interfaces/translations.interface';
 import { UserModel } from '../shared/models/user.model';
 import { DbService } from '../shared/services/db.service';
-import { CouponsApiService } from '../shared/services/coupons.api.service';
+import { CouponsService } from '../shared/services/coupons.service';
 
 import { IPlaylistEvent, PlaylistComponent } from './components/playlist/playlist.component';
 import { MixModel } from './model/playlist.model';
@@ -96,7 +96,7 @@ export class PlayerPage implements OnInit, OnDestroy {
   @ViewChild('draggedFilteredSoundsElm', { static: false }) draggedFilteredSounds: CdkDropList;
 
   selectedCategoryId: any;
-  coupons: any[];
+  activeCoupon: any;
   categories: any[];
   countDown: Observable<number>;
   color: string;
@@ -150,7 +150,7 @@ export class PlayerPage implements OnInit, OnDestroy {
     private _playerApiService: PlayerApiService,
     public playerSoundService: PlayerSoundService,
     private _playerSoundService: PlayerSoundService,
-    private _couponApiService: CouponsApiService,
+    private _couponService: CouponsService,
   ) {
     this.translateService.get(['error', 'noCourse', 'max5', 'notMoveToOfficial'])
       .pipe(takeUntil(this._destroy$))
@@ -839,26 +839,12 @@ export class PlayerPage implements OnInit, OnDestroy {
     });
   }
 
-  private getCoupons (): Promise<void> {
-    return new Promise<void>(resolve => {
-      this._couponApiService.getCouponsUser(this.user.uid.toString())
-        .subscribe(data => {
-          this.coupons = data;
-
-          resolve();
-
-          this._changeDetectorRef.detectChanges();
-        });
-    });
+  private async getActiveCoupon() {
+    this.activeCoupon = await this._couponService.getActiveCoupon();
   }
 
   private getCategories (): Promise<void> {
     let couponTypes = {salon_pack_cats: false, advanced_pack_cats: false, beauty_health_pack_cats: false};
-    const groupKeys = ['salon_pack_cats', 'advanced_pack_cats', 'beauty_health_pack_cats'];
-
-    this.coupons.forEach(coupon => {
-      couponTypes[coupon.pack + "_cats"] = true;
-    });
 
     return new Promise<void>(resolve => {
       this._playerApiService.getGroupedCategories()
@@ -866,14 +852,10 @@ export class PlayerPage implements OnInit, OnDestroy {
           let groupCategories = data;
           let categories = [], flag = {};
 
-          groupKeys.forEach(groupKey => {
-            if (couponTypes[groupKey] === true){
-              groupCategories[groupKey].values.forEach((category:any) => {
-                if (flag[category.id] !== true) {
-                  flag[category.id] = true;
-                  categories.push(category);
-                }
-              });
+          groupCategories[this.activeCoupon.pack+"_cats"].values.forEach((category:any) => {
+            if (flag[category.id] !== true) {
+              flag[category.id] = true;
+              categories.push(category);
             }
           });
           this.categories = categories;
@@ -977,7 +959,7 @@ export class PlayerPage implements OnInit, OnDestroy {
   private async loadData (): Promise<void> {
     await this.getPack();
     await this.getUser();
-    await this.getCoupons();
+    await this.getActiveCoupon();
 
     if (!this.user) {
       return;
