@@ -146,8 +146,8 @@ export class RegisterPage implements OnInit, OnDestroy {
 
   async saveUser (user: UserModel): Promise<void> {
     await this._dbService.executeSql(
-      'INSERT INTO user(uid, name, email) VALUES (?, ?, ?)',
-      [user.id, user.name, user.email],
+      'INSERT INTO user(uid, name, last_name, phone, email) VALUES (?, ?, ?, ?, ?)',
+      [user.id, user.name, user.last_name, user.phone, user.email],
     )
       .catch(error => console.error('Error! Can not save user' + error));
   }

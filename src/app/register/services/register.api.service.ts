@@ -24,12 +24,13 @@ export class RegisterApiService {
   register ({ first_name, last_name, address, phone, email, password }: IRegisterData): Observable<IResponse> {
     const params = new HttpParams({
       fromObject: {
-        first_name,
-        last_name,
-        address,
-        phone,
-        email,
-        password,
+        name: first_name,
+        last_name: last_name,
+        address: address,
+        phone: phone,
+        email: email,
+        password: password,
+        city_id: ''
       },
     });
 

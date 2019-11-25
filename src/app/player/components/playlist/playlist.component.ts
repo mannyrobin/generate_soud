@@ -375,6 +375,12 @@ export class PlaylistComponent implements OnInit, OnChanges, OnDestroy {
     this.emitSelectedSounds();
   }
 
+  removeSound (sound: SoundModel): void {    
+    this.selectedItemSounds = this.selectedItemSounds.filter(it => it.uuid !== sound.uuid);
+    
+    this.updateSounds();    
+  }
+
   saveMix (): void {
     this.load('Загрузка');
 
@@ -513,6 +519,8 @@ export class PlaylistComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateSounds (): void {
+    this.load('Загрузка');
+
     this._playerApiService.addPlayListSound({
       id: this.selectedItemId,
       sounds_id: this.selectedItemSounds.map(sound => sound.id).join(','),
@@ -528,7 +536,7 @@ export class PlaylistComponent implements OnInit, OnChanges, OnDestroy {
         // await this.getCourses();
         // await this.getSounds();
         await this.getPlayLists();
-
+        this._loadingController.dismiss();
         this._changeDetectorRef.detectChanges();
       });
   }
