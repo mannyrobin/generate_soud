@@ -252,6 +252,12 @@ export class PlaylistComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   copySounds (): void {
+    if (this.copiedSounds.length !== 0 || this.copiedMixes.length !== 0) {
+      this.copiedSounds = [];
+      this.copiedMixes = [];
+      return;
+    }
+      
     this.copiedSounds = [];
     this.copiedMixes  = [];
 

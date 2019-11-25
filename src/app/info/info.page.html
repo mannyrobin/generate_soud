@@ -28,8 +28,13 @@
               <p>{{ 'address' | translate }}</p>
               <input type="text" formControlName="address">
             </div>
-          </div>
 
+            <div class="left_bott_el">
+                <p>{{ 'couponNo' | translate }}</p>
+                <!--input type="text" formControlName="address"-->
+                <input type="text" value="{{ coupon_number }}" readonly>
+              </div>
+          </div>
           <div class="left_card">
             <p>{{ 'bankCards' | translate }}</p>
             <a class="txt_col_ plus_button" (click)="unavailable()">

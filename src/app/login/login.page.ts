@@ -25,6 +25,7 @@ export class LoginPage implements OnInit, OnDestroy {
   public email: string;
   public password: string;
   public user: UserModel;
+  public isFailed: boolean;
   translations: ITranslations = {};
   selectedLang: string        = APP_LANGUAGES[0].code;
   APP_LANGUAGES: ILanguage[]  = APP_LANGUAGES;
@@ -68,6 +69,7 @@ export class LoginPage implements OnInit, OnDestroy {
   tryLogin (): void {
     if (!this.email || !this.password) {
       this.alert(this.translations.error, this.translations.enterData);
+      this.isFailed = true;
     }
 
     this._loginApiService.login({
@@ -77,13 +79,13 @@ export class LoginPage implements OnInit, OnDestroy {
       .subscribe((response: IResponse) => {
         if (response.code === 500) {
           this.alert(this.translations.error, response.msg);
-
+          this.isFailed = true;
           return;
         }
 
         if (response.code === 200 && response.msg !== 'success') {
           this.alert(this.translations.error, this.translations.noUser);
-
+          this.isFailed = true;
           return;
         }
 

@@ -81,6 +81,7 @@
   "subscription": "Subscription",
   "player": "Player",
   "logout": "Logout",
-  "done": "Done"
+  "done": "Done",
+  "couponNo": "coupon code"
 }
 

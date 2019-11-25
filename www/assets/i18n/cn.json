@@ -85,5 +85,6 @@
   "subscription": "订阅方式",
   "player": "播放器",
   "logout": "登出",
-  "done": "做完了"
+  "done": "做完了",
+  "couponNo": "优惠券代码"
 }

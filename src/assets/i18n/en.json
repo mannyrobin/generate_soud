@@ -12,7 +12,7 @@
   "bankCard": "By credit card",
   "bankTrans": "Bank transfer",
   "haveCode": "Already have a code",
-  "couponCode": "Enter coupon code",
+  "couponCode": "Enter Coupon Code",
   "next": "Next",
   "error": "Error",
   "codeError": "The input code is invalid!",
@@ -81,6 +81,7 @@
   "subscription": "Subscription",
   "player": "Player",
   "logout": "Logout",
-  "done": "Done"
+  "done": "Done",
+  "couponNo": "Coupon Code"
 }
 

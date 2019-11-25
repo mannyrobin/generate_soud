@@ -3,7 +3,6 @@
     <div class="right_content purch_content">
       <div class="purchase_hist">
         <h2>{{ "buyHistory" | translate }}</h2>
-
         <div class="inn_purchase">
           <div class="head_purch">
             <div class="purch_desc">
@@ -14,24 +13,35 @@
               <p>{{ 'date' | translate }}</p>
             </div>
 
+            
             <div class="purch_cost">
               <p>{{ 'cost' | translate }}</p>
             </div>
+
+            <div class="purch_couponno">
+              <p>{{ 'couponNo' | translate }}</p>
+            </div>
           </div>
 
-          <div
-            *ngFor="let coupon of coupons"
-            class="elem_purch">
-            <div class="purch_desc">
-              <p>{{ coupon.packname }}</p>
-            </div>
+          <div class="overflow-table-body">
+            <div
+              *ngFor="let coupon of coupons"
+              class="elem_purch">
+              <div class="purch_desc">
+                <p>{{ coupon.packname }}</p>
+              </div>
 
-            <div class="purch_date">
-              <p>{{ coupon.created_at }}</p>
-            </div>
+              <div class="purch_date">
+                <p>{{ convertToTkTime(coupon.created_at) }}</p>
+              </div>
 
-            <div class="purch_cost">
-              <p>{{ coupon.packprice }}</p>
+              <div class="purch_cost">
+                <p>{{ coupon.packprice }}</p>
+              </div>
+
+              <div class="purch_couponno">
+                <p>{{ coupon.number }}</p>
+              </div>
             </div>
           </div>
         </div>

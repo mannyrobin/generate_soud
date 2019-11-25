@@ -28,15 +28,14 @@
         <h2>{{ "enter" | translate }}</h2>
         <div class="form_center">
           <form action="">
-            <div class="wrap_form">
+            <div class="wrap_form" [class.has-error]="isFailed === true">
               <p>{{ "enterEmail" | translate }}</p>
               <ion-input type="email" [(ngModel)]="email" name="email"></ion-input>
             </div>
-            <div class="wrap_form">
+            <div class="wrap_form" [class.has-error]="isFailed === true">
               <p>{{ "enterPass" | translate }}</p>
               <ion-input type="password" [(ngModel)]="password" name="password"></ion-input>
             </div>
-
             <div class="wrap_form wrap_form_subm">
               <input type="submit" value="{{'login' | translate}}" (click)="tryLogin()">
             </div>

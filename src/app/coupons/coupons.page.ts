@@ -39,6 +39,7 @@ export class CouponsPage implements OnInit {
 
   private async init (): Promise<void> {
     this.activeCoupon = await this._couponsService.getActiveCoupon();
+    console.log(this.activeCoupon);
 
     this._changeDetectorRef.detectChanges();
   }

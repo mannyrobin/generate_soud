@@ -2070,17 +2070,22 @@ a:hover {
   ion-menu, .wrap_of_main_structure > .purch_content {
     padding-top: 100px;
 
+    & .overflow-table-body{
+      height: 600px;
+      overflow-y: scroll;
+      overflow-x: auto;
+    }
+
     & .inn_purchase > div {
       min-height: 89px;
       padding-top: 20px;
       padding-bottom: 20px;
       padding-left: 35px;
       padding-left: 35px;
-      display: flex;
+      
       align-items: center;
       border-bottom: 2px solid #F4F4F6;
       justify-content: space-between;
-
     }
 
     & .purchase_hist > h2 {
@@ -2096,16 +2101,25 @@ a:hover {
 
     & .purch_desc {
       width: 55%;
+      float: left;
     }
 
     & .purch_date {
-      width: 13%;
+      width: 15%;
       text-align: left;
+      float: left;
     }
 
     & .purch_cost {
-      width: 13%;
+      width: 15%;
       text-align: left;
+      float: left;
+    }
+
+    & .purch_couponno {
+      width: 15%;
+      text-align: left;
+      float: left;
     }
 
     & .inn_purchase p {

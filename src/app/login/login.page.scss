@@ -44,3 +44,11 @@
   background: #0E1FC0;
   color: #ffffff;
 }
+
+.wrap_form {
+  &.has-error {
+    ion-input{
+        border: 2px solid #ff0000 !important;
+    }
+  }
+}

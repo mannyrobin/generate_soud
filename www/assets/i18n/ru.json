@@ -81,5 +81,6 @@
   "subscription": "Подписка",
   "player": "Плеер",
   "logout": "Выход",
-  "done": "Готово"
+  "done": "Готово",
+  "couponNo": "код купона"
 }

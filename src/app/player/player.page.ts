@@ -376,6 +376,12 @@ export class PlayerPage implements OnInit, OnDestroy {
   }
 
   copySounds (): void {
+    if (this.copiedSounds.length !== 0 || this.copiedMixes.length !== 0) {
+      this.copiedSounds = [];
+      this.copiedMixes = [];
+      return;
+    }
+
     this.copiedSounds = this.selectedSounds.length
       ? [...this.selectedSounds]
       : [...this.soundList];
@@ -448,6 +454,10 @@ export class PlayerPage implements OnInit, OnDestroy {
     this.playerFormGroup.get(CONTROLS_NAME.CUSTOM_TIME).disable({ emitEvent: false });
   }
 
+  delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+  }
+
   changeSelectedSounds (sound: SoundModel, event: MouseEvent): void {
     event.stopPropagation();
 
@@ -482,10 +492,10 @@ export class PlayerPage implements OnInit, OnDestroy {
     }
   }
 
-  removeSound (sound: SoundModel): void {
+  removeSound (sound: SoundModel): void {    
     this.soundList = this.soundList.filter(it => it.uuid !== sound.uuid);
-
-    this.updateSounds();
+    
+    this.updateSounds();    
   }
 
   setCourse (course: any): void {
@@ -690,6 +700,8 @@ export class PlayerPage implements OnInit, OnDestroy {
   }
 
   private updateSounds (): void {
+    this.load('Загрузка');
+
     this._playerApiService.addSounds({
       id: this.selectedCourse,
       sounds_id: this.soundList.map(sound => sound.id).join(','),
@@ -704,7 +716,7 @@ export class PlayerPage implements OnInit, OnDestroy {
       .subscribe(async () => {
         await this.getCourses();
         await this.getSounds();
-
+        this.loadingController.dismiss();
         this._changeDetectorRef.detectChanges();
       });
   }

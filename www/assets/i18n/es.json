@@ -85,5 +85,6 @@
   "subscription": "Suscripción",
   "player": "Jugador",
   "logout": "Cerrar sesión",
-  "done": "Hecho"
+  "done": "Hecho",
+  "couponNo": "código de cupón"
 }

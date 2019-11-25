@@ -8,6 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { ITranslations } from '../shared/interfaces/translations.interface';
 import { DbService } from '../shared/services/db.service';
+import { CouponsService } from '../shared/services/coupons.service';
 
 @Component({
   selector: 'app-info',
@@ -26,6 +27,8 @@ export class InfoPage implements OnInit, OnDestroy {
     address: new FormControl(),
   });
 
+  coupon_number: '';
+
   translations: ITranslations = {};
 
   private readonly _destroy$: Subject<void> = new Subject<void>();
@@ -35,6 +38,7 @@ export class InfoPage implements OnInit, OnDestroy {
     private _alertController: AlertController,
     private storage: Storage,
     private _dbService: DbService,
+    private _couponService : CouponsService,
     private _translateService: TranslateService,
   ) {
   }
@@ -50,6 +54,7 @@ export class InfoPage implements OnInit, OnDestroy {
     this.menu.open();
 
     this.getUser();
+    this.getCoupon();
 
     this.storage.get('color')
       .then(val => this.color = val);
@@ -84,9 +89,19 @@ export class InfoPage implements OnInit, OnDestroy {
     await alert.present();
   }
 
+  private async getCoupon(): Promise<void> {
+    const activeCoupon = await this._couponService.getActiveCoupon();
+    try {
+      this.coupon_number = activeCoupon.number;
+    }
+    catch(err) {
+      this.coupon_number = '';
+    }
+  }
+
   private async getUser (): Promise<void> {
     const userData = await this._dbService.executeSql('SELECT * FROM user', []);
-
+    
     if (!userData) {
       console.error('ERROR: no user in table');
 
