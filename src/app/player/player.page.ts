@@ -22,6 +22,7 @@ import { APP_ROUTE_URLS } from '../shared/constants/routes.constant';
 import { ITranslations } from '../shared/interfaces/translations.interface';
 import { UserModel } from '../shared/models/user.model';
 import { DbService } from '../shared/services/db.service';
+import { CouponsApiService } from '../shared/services/coupons.api.service';
 
 import { IPlaylistEvent, PlaylistComponent } from './components/playlist/playlist.component';
 import { MixModel } from './model/playlist.model';
@@ -95,6 +96,7 @@ export class PlayerPage implements OnInit, OnDestroy {
   @ViewChild('draggedFilteredSoundsElm', { static: false }) draggedFilteredSounds: CdkDropList;
 
   selectedCategoryId: any;
+  coupons: any[];
   categories: any[];
   countDown: Observable<number>;
   color: string;
@@ -113,7 +115,7 @@ export class PlayerPage implements OnInit, OnDestroy {
   isPlaylistOpened: boolean           = false;
   totalDuration: number               = 0;
   isRangeChange: boolean              = false;
-
+  
   playerFormGroup: FormGroup = new FormGroup({
     [CONTROLS_NAME.CATEGORY]: new FormControl(),
     [CONTROLS_NAME.COURSE]: new FormControl(),
@@ -148,6 +150,7 @@ export class PlayerPage implements OnInit, OnDestroy {
     private _playerApiService: PlayerApiService,
     public playerSoundService: PlayerSoundService,
     private _playerSoundService: PlayerSoundService,
+    private _couponApiService: CouponsApiService,
   ) {
     this.translateService.get(['error', 'noCourse', 'max5', 'notMoveToOfficial'])
       .pipe(takeUntil(this._destroy$))
@@ -836,11 +839,44 @@ export class PlayerPage implements OnInit, OnDestroy {
     });
   }
 
-  private getCategories (): Promise<void> {
+  private getCoupons (): Promise<void> {
     return new Promise<void>(resolve => {
-      this._playerApiService.getCategories()
+      this._couponApiService.getCouponsUser(this.user.uid.toString())
         .subscribe(data => {
-          this.categories = data.list;
+          this.coupons = data;
+
+          resolve();
+
+          this._changeDetectorRef.detectChanges();
+        });
+    });
+  }
+
+  private getCategories (): Promise<void> {
+    let couponTypes = {salon_pack_cats: false, advanced_pack_cats: false, beauty_health_pack_cats: false};
+    const groupKeys = ['salon_pack_cats', 'advanced_pack_cats', 'beauty_health_pack_cats'];
+
+    this.coupons.forEach(coupon => {
+      couponTypes[coupon.pack + "_cats"] = true;
+    });
+
+    return new Promise<void>(resolve => {
+      this._playerApiService.getGroupedCategories()
+        .subscribe(data => {
+          let groupCategories = data;
+          let categories = [], flag = {};
+
+          groupKeys.forEach(groupKey => {
+            if (couponTypes[groupKey] === true){
+              groupCategories[groupKey].values.forEach((category:any) => {
+                if (flag[category.id] !== true) {
+                  flag[category.id] = true;
+                  categories.push(category);
+                }
+              });
+            }
+          });
+          this.categories = categories;
 
           resolve();
 
@@ -941,6 +977,7 @@ export class PlayerPage implements OnInit, OnDestroy {
   private async loadData (): Promise<void> {
     await this.getPack();
     await this.getUser();
+    await this.getCoupons();
 
     if (!this.user) {
       return;

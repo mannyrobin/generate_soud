@@ -46,6 +46,10 @@ export class PlayerApiService {
     return this._http.get(`${API_ENDPOINT}/${API_COURSE}/getCourseList`);
   }
 
+  getGroupedCategories (): Observable<any> {
+    return this._http.get(`${API_ENDPOINT}/${API_CATEGORY}/getCateoryListGrouped`);
+  }
+
   getCategories (): Observable<any> {
     return this._http.get(`${API_ENDPOINT}/${API_CATEGORY}/getCateoryList`);
   }
